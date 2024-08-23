@@ -1,3 +1,7 @@
+# Chapter 07 - Native Deployment
+
+In this chapter, we will learn how to deploy a Quarkus application as a native executable. We will also learn how to build a native executable using a Docker container.
+
 # quarkus-sample
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
