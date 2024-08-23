@@ -38,5 +38,5 @@ jobs:
 
       - name: Build Native Image
         run: |
-        cd tutorial/07-native-deployment
-        ./mvnw package -Pnative
+          cd tutorial/07-native-deployment
+          ./mvnw package -Pnative
