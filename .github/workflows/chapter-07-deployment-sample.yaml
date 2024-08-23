@@ -36,19 +36,19 @@ jobs:
       #     distribution: 'temurin'
       #     java-version: '17'
 
-      # - name: Setup GraalVM
-      #   uses: graalvm/setup-graalvm@v1
-      #   with:
-      #     version: 'latest'
-      #     java-version: '17'
-      #     components: 'native-image'
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          version: 'latest'
+          java-version: '17'
+          components: 'native-image'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Native Image
         run: |
           cd tutorial/07-native-deployment
           ./mvnw package -Pnative
-          
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
