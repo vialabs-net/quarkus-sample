@@ -14,43 +14,20 @@ on: [push, pull_request]
 jobs:
   Quarkus-Native-Build:
     runs-on: ubuntu-latest
-    services:
-      docker:
-        image: quay.io/quarkus/ubi-quarkus-mandrel-builder-image:22.3-java17
-        options: --privileged
+    container:
+      image: quay.io/quarkus/ubi-quarkus-mandrel-builder-image:22.3-java17
+
     steps:
-      - name: Checkout the code
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Cache Maven packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+    - name: Build Native Image
+      run: |
+        cd tutorial/07-native-deployment
+        ./mvnw package -Pnative
 
-      # - name: Set up JDK 17
-      #   uses: actions/setup-java@v4
-      #   with:
-      #     distribution: 'temurin'
-      #     java-version: '17'
-
-      - name: Setup GraalVM
-        uses: graalvm/setup-graalvm@v1
-        with:
-          version: 'latest'
-          java-version: '17'
-          components: 'native-image'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build Native Image
-        run: |
-          cd tutorial/07-native-deployment
-          ./mvnw package -Pnative
-
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: native-image-runner
-          path: tutorial/07-native-deployment/target/*-runner
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: native-image-runner
+        path: tutorial/07-native-deployment/target/*-runner
