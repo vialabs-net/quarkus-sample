@@ -2,14 +2,14 @@ name: Quarkus Native Example Demo
 
 run-name: ${{ github.actor }} is testing Quarkus Native Example 🚀
 
-on: 
-  push:
-    paths: 
-      - 'tutorial/07-native-deployment/**'
+on: [push, pull_request]
+  # push:
+  #   paths: 
+  #     - 'tutorial/07-native-deployment/**'
 
-  pull_request:
-    paths: 
-      - 'tutorial/07-native-deployment/**'
+  # pull_request:
+  #   paths: 
+  #     - 'tutorial/07-native-deployment/**'
 
 jobs:
   Quarkus-Native-Build:
@@ -28,13 +28,15 @@ jobs:
       #     distribution: 'temurin'
       #     java-version: '17'
 
-      - name: Cache Maven dependencies
-        uses: actions/cache@v2
+      - name: Setup GraalVM
+        uses: graalvm/setup-graalvm@v1
         with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+          version: 'latest'
+          java-version: '17'
+          components: 'native-image'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Native Image
-        run: ./mvnw package -Pnative
+        run: |
+        cd tutorial/07-native-deployment
+        ./mvnw package -Pnative
