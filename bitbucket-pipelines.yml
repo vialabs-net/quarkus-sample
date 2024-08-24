@@ -1,8 +1,3 @@
-# This is an example Starter pipeline configuration
-# Use a skeleton to build, test and deploy using manual and parallel steps
-# -----
-# You can specify a custom docker image from Docker Hub as your build environment.
-
 definitions:
   steps:
     - step: &build
@@ -20,7 +15,7 @@ definitions:
           - cd tutorial/07-native-deployment
           - ./mvnw package -Pnative
         artifacts:
-          - target/*-runner
+          - tutorial/07-native-deployment/target/*-runner
 
 pipelines:
   branches:
