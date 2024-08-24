@@ -1,0 +1,29 @@
+# This is an example Starter pipeline configuration
+# Use a skeleton to build, test and deploy using manual and parallel steps
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+
+definitions:
+  steps:
+    - step: &build
+        name: Build
+        caches:
+          - docker
+        name: Build Native Image
+        image: quay.io/quarkus/ubi-quarkus-mandrel-builder-image:22.3-java17
+        services:
+          - docker
+        size: 2x
+        caches:
+          - maven
+        script:
+          - cd tutorial/07-native-deployment
+          - ./mvnw package -Pnative
+        artifacts:
+          - target/*-runner
+
+pipelines:
+  branches:
+    '*':
+      - step: *build
+     
